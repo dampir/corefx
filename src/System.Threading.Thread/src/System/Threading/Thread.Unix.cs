@@ -8,10 +8,28 @@ namespace System.Threading
 {
     public sealed partial class Thread
     {
-        public ApartmentState GetApartmentState() => ApartmentState.Unknown;
-        private static Exception GetApartmentStateChangeFailedException() => new PlatformNotSupportedException(SR.PlatformNotSupported_COMInterop);
-        private bool TrySetApartmentStateUnchecked(ApartmentState state) => state == GetApartmentState();
+#if MONO
+        public ApartmentState Unix_GetApartmentState() => ApartmentState.Unknown;
+#else
+		public ApartmentState GetApartmentState() => ApartmentState.Unknown;
+#endif
 
-        public void DisableComObjectEagerCleanup() { }
+#if MONO
+        private static Exception Unix_GetApartmentStateChangeFailedException() => new PlatformNotSupportedException(SR.PlatformNotSupported_COMInterop);
+#else
+		private static Exception GetApartmentStateChangeFailedException() => new PlatformNotSupportedException(SR.PlatformNotSupported_COMInterop);
+#endif
+
+#if MONO
+        private bool Unix_TrySetApartmentStateUnchecked(ApartmentState state) => state == GetApartmentState();
+#else
+		private bool TrySetApartmentStateUnchecked(ApartmentState state) => state == GetApartmentState();
+#endif
+
+#if MONO
+        public void Unix_DisableComObjectEagerCleanup() { }
+#else
+		public void DisableComObjectEagerCleanup() { }
+#endif
     }
 }

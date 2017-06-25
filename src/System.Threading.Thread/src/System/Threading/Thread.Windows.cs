@@ -8,11 +8,30 @@ namespace System.Threading
 {
     public sealed partial class Thread
     {
-        public ApartmentState GetApartmentState() => _runtimeThread.GetApartmentState();
-        private static Exception GetApartmentStateChangeFailedException() =>
+#if MONO
+        public ApartmentState Windows_GetApartmentState() => _runtimeThread.GetApartmentState();
+#else
+		public ApartmentState GetApartmentState() => _runtimeThread.GetApartmentState();
+#endif
+	
+#if MONO
+        private static Exception Windows_GetApartmentStateChangeFailedException() =>
             new InvalidOperationException(SR.Thread_ApartmentState_ChangeFailed);
-        private bool TrySetApartmentStateUnchecked(ApartmentState state) => _runtimeThread.TrySetApartmentState(state);
+#else
+		private static Exception Windows_GetApartmentStateChangeFailedException() =>
+            new InvalidOperationException(SR.Thread_ApartmentState_ChangeFailed);
+#endif
 
-        public void DisableComObjectEagerCleanup() => _runtimeThread.DisableComObjectEagerCleanup();
+#if MONO
+        private bool Windows_TrySetApartmentStateUnchecked(ApartmentState state) => _runtimeThread.TrySetApartmentState(state);
+#else
+		private bool TrySetApartmentStateUnchecked(ApartmentState state) => _runtimeThread.TrySetApartmentState(state);
+#endif
+	
+#if MONO
+        public void Windows_DisableComObjectEagerCleanup() => _runtimeThread.DisableComObjectEagerCleanup();
+#else
+		public void DisableComObjectEagerCleanup() => _runtimeThread.DisableComObjectEagerCleanup();
+#endif
     }
 }
