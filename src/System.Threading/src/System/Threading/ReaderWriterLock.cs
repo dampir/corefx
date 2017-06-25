@@ -4,6 +4,9 @@
 
 using Internal.Runtime.Augments;
 using System.Diagnostics;
+#if MONO
+using System.Diagnostics.Private;
+#endif
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.Serialization;
 
