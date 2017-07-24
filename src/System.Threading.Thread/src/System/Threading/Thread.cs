@@ -14,10 +14,11 @@ using System.Security.Principal;
 
 namespace System.Threading
 {
+    [StructLayout (LayoutKind.Sequential)]
     public sealed partial class Thread : CriticalFinalizerObject
     {
         [ThreadStatic]
-        private static Thread t_currentThread;
+        static Thread t_currentThread;
 
         private readonly RuntimeThread _runtimeThread;
         private Delegate _start;
